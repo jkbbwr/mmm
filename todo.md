@@ -8,6 +8,7 @@ Issue trackers are for nerds and people with organisational problems.
 
 ### Server
 [ ] - Provide an endpoint for revocation list
+[ ] - Epose OCSP ?
 [ ] - Provide an endpoint for the CA certificate(s)
 [ ] - Accept CSRs
 [ ] - Simple REST api for querying and admin
@@ -27,3 +28,4 @@ Issue trackers are for nerds and people with organisational problems.
 
 ### Misc
 [ ] - Look into client side cert CN validation
+[ ] - Look at boringssl / libressl / wolfssl ??
