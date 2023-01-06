@@ -5,21 +5,23 @@ pub mod server;
 pub mod setup;
 
 use axum::async_trait;
-use config::Config;
+
 pub use doctor::Doctor;
-pub use setup::Setup;
 pub use server::Server;
+pub use setup::Setup;
+
+use crate::settings::Settings;
 
 #[async_trait]
 pub trait Run {
-    async fn run(&self, config: &Config) -> eyre::Result<()>;
+    async fn run(&self, settings: &Settings) -> eyre::Result<()>;
 }
 
 #[derive(FromArgs, Debug)]
-#[argh(description="Mini mTLS Manager.")]
+#[argh(description = "Mini mTLS Manager.")]
 pub struct Cli {
     #[argh(subcommand)]
-    pub command: SubCommand
+    pub command: SubCommand,
 }
 
 #[derive(FromArgs, Debug)]
@@ -31,12 +33,13 @@ pub enum SubCommand {
 }
 
 impl SubCommand {
-    pub async fn run(&self, config: &Config) -> eyre::Result<()> {
+    pub async fn run(&self, settings: &Settings) -> eyre::Result<()> {
         match self {
-            SubCommand::Setup(setup) => setup.run(config),
-            SubCommand::Server(server) => server.run(config),
-            SubCommand::Doctor(doctor) => doctor.run(config)
-        }.await?;
+            SubCommand::Setup(setup) => setup.run(settings),
+            SubCommand::Server(server) => server.run(settings),
+            SubCommand::Doctor(doctor) => doctor.run(settings),
+        }
+        .await?;
         Ok(())
     }
 }

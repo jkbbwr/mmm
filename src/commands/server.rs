@@ -1,11 +1,11 @@
-use std::net::SocketAddr;
+use crate::settings::Settings;
 
 use super::Run;
 use argh::FromArgs;
+
 use axum::Server as AxumServer;
 use axum::{async_trait, Router};
-use config::Config;
-use eyre::WrapErr;
+
 use tokio::signal;
 use tracing::info;
 
@@ -15,17 +15,14 @@ pub struct Server {}
 
 #[async_trait]
 impl Run for Server {
-    async fn run(&self, config: &Config) -> eyre::Result<()> {
-        let bind = config
-            .get_string("bind")?
-            .parse::<SocketAddr>()
-            .wrap_err("unable to parse bind address")?;
+    async fn run(&self, settings: &Settings) -> eyre::Result<()> {
+        tracing_subscriber::fmt::init();
 
+        let host = settings.server.host.parse()?;
         let app = Router::new();
 
-        info!("Starting server, listening on {}", bind);
-
-        AxumServer::bind(&bind)
+        info!("Starting server, listening on {}", host);
+        AxumServer::bind(&host)
             .serve(app.into_make_service())
             .with_graceful_shutdown(async {
                 let ctrl_c = async {

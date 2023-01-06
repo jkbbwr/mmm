@@ -1,8 +1,7 @@
 use argh::FromArgs;
 use axum::async_trait;
-use config::Config;
-use tracing::info;
-use tracing::warn;
+
+use crate::settings::Settings;
 
 use super::Run;
 
@@ -16,8 +15,7 @@ pub struct Doctor {}
 
 #[async_trait]
 impl Run for Doctor {
-    async fn run(&self, config: &Config) -> eyre::Result<()> {
-
+    async fn run(&self, _settings: &Settings) -> eyre::Result<()> {
         Ok(())
     }
 }
