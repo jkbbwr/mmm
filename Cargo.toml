@@ -10,6 +10,7 @@ argh = "0.1.9"
 axum = { version = "0.6.1", features = ["headers", "macros", "json"] }
 axum-extra = { version = "0.4.2", features = ["typed-routing"] }
 bunt = "0.2.7"
+chrono = "0.4.23"
 color-eyre = "0.6.2"
 derive-new = "0.5.9"
 eyre = "0.6.8"
