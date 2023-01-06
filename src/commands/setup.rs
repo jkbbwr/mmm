@@ -1,3 +1,4 @@
+use std::fs;
 use std::io::prelude::*;
 
 use std::{fs::File, path::Path};
@@ -25,14 +26,14 @@ pub struct Setup {
     #[argh(
         option,
         description = "path for the ca private key.",
-        default = "String::from(\"./keys/ca.private\")"
+        default = "String::from(\"./mmm/ca.private\")"
     )]
     ca_private_key_path: String,
 
     #[argh(
         option,
         description = "path for the ca cert.",
-        default = "String::from(\"./certs/ca_root.cert\")"
+        default = "String::from(\"./mmm/ca_root.cert\")"
     )]
     ca_root_certificate_path: String,
 
@@ -78,6 +79,10 @@ impl Run for Setup {
 
         if Path::new("./mmm.toml").exists() && !self.overwrite {
             bail!("./mmm.toml exists and --overwrite wasn't given.");
+        }
+
+        if !Path::new("./mmm").exists() {
+            fs::create_dir("./mmm")?;
         }
 
         bunt::println!(
