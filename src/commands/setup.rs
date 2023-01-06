@@ -1,5 +1,6 @@
 use argh::FromArgs;
 use axum::async_trait;
+use config::Config;
 
 use super::Run;
 
@@ -11,7 +12,7 @@ pub struct Setup {
 
 #[async_trait]
 impl Run for Setup {
-    async fn run(&self) -> eyre::Result<()> {
+    async fn run(&self, config: &Config) -> eyre::Result<()> {
         todo!()
     }
 }

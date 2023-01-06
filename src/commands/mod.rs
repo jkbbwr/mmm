@@ -5,13 +5,14 @@ pub mod server;
 pub mod setup;
 
 use axum::async_trait;
+use config::Config;
 pub use doctor::Doctor;
 pub use setup::Setup;
 pub use server::Server;
 
 #[async_trait]
 pub trait Run {
-    async fn run(&self) -> eyre::Result<()>;
+    async fn run(&self, config: &Config) -> eyre::Result<()>;
 }
 
 #[derive(FromArgs, Debug)]
@@ -30,11 +31,11 @@ pub enum SubCommand {
 }
 
 impl SubCommand {
-    pub async fn run(&self) -> eyre::Result<()> {
+    pub async fn run(&self, config: &Config) -> eyre::Result<()> {
         match self {
-            SubCommand::Setup(setup) => setup.run(),
-            SubCommand::Server(server) => server.run(),
-            SubCommand::Doctor(doctor) => doctor.run()
+            SubCommand::Setup(setup) => setup.run(config),
+            SubCommand::Server(server) => server.run(config),
+            SubCommand::Doctor(doctor) => doctor.run(config)
         }.await?;
         Ok(())
     }
